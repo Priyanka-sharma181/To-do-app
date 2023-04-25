@@ -5,7 +5,7 @@ const {
 } = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
-getAllUsers = (req, res) => {
+let getAllUsers = (req, res) => {
     knex('User')
         .select("*")
         .then((data) => {
@@ -22,21 +22,16 @@ getAllUsers = (req, res) => {
         });
 };
 
-signup = (req, res) => {
+let signup = (req, res) => {
     if (!req.body.Name || !req.body.email || !req.body.password) {
         res.send({
             "success": false,
             "status": 400,
             "message": "Got error while saving",
         })
-        console.log({
-            "success": false,
-            "status": 400,
-            "message": "Got error while saving",
-        });
         return ""
     }
-    salt = genSaltSync(10)
+    let salt = genSaltSync(10)
     const userdata = {
         Name: req.body.Name,
         email: req.body.email,
@@ -51,12 +46,11 @@ signup = (req, res) => {
             });
         })
         .catch((err) => {
-            if (res.errorno = 1062) {
+            if (res.errorno == 1062) {
                 res.send({
                     message: "this email already exist"
                 })
             } else {
-                console.log(err);
                 res.send({
                     message: err
                 });
@@ -64,16 +58,14 @@ signup = (req, res) => {
         });
 }
 
-userLogin = (req, res) => {
+let userLogin = (req, res) => {
     knex.from('User').select("*").where("email", "=", req.body.email, "password", "=", req.body.password)
         .then((data) => {
-            // console.log(data);
-            token = jwt.sign({
+            let token = jwt.sign({
                 id: data[0].id
             }, "priyanka", {
                 expiresIn: "6h"
             })
-            console.log(token, "ok");
             res.cookie("user", token)
             res.json({
                 "success": true,

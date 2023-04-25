@@ -1,9 +1,7 @@
 
 const knex = require("../model/db")
 
-
-
-getAllTodo = (req, res) => {
+let getAllTodo = (req, res) => {
     knex
         .select("*")
         .from("todo")
@@ -14,48 +12,51 @@ getAllTodo = (req, res) => {
             });
         })
         .catch((er) => {
-            console.log(er);
-            res.json({
-                message: er
+            res.send({
+                message: err
             });
         });
 };
 // post to do
-
-postToDO = (req, res) => {
+let postToDO = (req, res) => {
     const data = {
         id: req.body.id,
         description: req.body.description,
         message: req.body.message
     }
-    console.log(data);
     knex('Todo').insert(data)
         .then((data) => {
             res.send(data)
         })
         .catch((err) => {
-            console.log(err);
+            res.send({
+                message: err
+            });
         })
 }
-deletTodo = (req,res)=>{
+let deletTodo = (req, res) => {
     let id = req.params.id
-    knex('Todo').select("*").delete().where('Todo.id',id)
-    .then(()=>{
-        res.send("deleted")
-    })
-    .catch((err)=>{
-        res.send(err)
-    })
+    knex('Todo').select("*").delete().where('Todo.id', id)
+        .then(() => {
+            res.send("deleted")
+        })
+        .catch((err) => {
+            res.send({
+                message: err
+            });
+        })
 }
-updateTodo = (req,res)=>{
+let updateTodo = (req, res) => {
     let id = req.params.id;
-    knex('Todo').select("*").update({description:req.body.description,message:req.body.message}).where('Todo.id','=',id)
-    .then((data)=>{
-        res.sendStatus(200)
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
+    knex('Todo').select("*").update({ description: req.body.description, message: req.body.message }).where('Todo.id', '=', id)
+        .then((data) => {
+            res.sendStatus(200)
+        })
+        .catch((err) => {
+            res.send({
+                message: err
+            });
+        })
 }
 
-module.exports={getAllTodo,postToDO,deletTodo,updateTodo}
+module.exports = { getAllTodo, postToDO, deletTodo, updateTodo }

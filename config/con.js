@@ -1,10 +1,9 @@
 const mysql = require("mysql");
 const dbCon = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    database:"ToDoApp",
-    password:"Pink@123"
-
+    host:process.env.host,
+    user:process.env.user,
+    database:process.env.database,
+    password:process.env.password
 })
 dbCon.connect(function(err) {
     if (err) throw err;

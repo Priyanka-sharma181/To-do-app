@@ -1,6 +1,6 @@
 const knex = require("../model/db")
 
-getCategory = (req, res) => {
+let getCategory = (req, res) => {
     knex('Category').join('User','catgory_id','=','user_id').select("*")
         .then((data) => {
             console.log(data);
@@ -16,12 +16,11 @@ getCategory = (req, res) => {
         });
 };
 
-getCategoryById = (req, res) => {
+let getCategoryById = (req, res) => {
     let id = req.params.id
     knex.select("*")
         .from("Category").where('Category.id', '=', id)
         .then((data) => {
-            // console.log(data);
             res.json({
                 data: data
             });
@@ -34,20 +33,18 @@ getCategoryById = (req, res) => {
         });
 };
 
-postCategory = (req, res) => {
+let postCategory = (req, res) => {
     let data = {
         Category_name: req.body.Category_name
     }
     knex('Category').insert(data).then((d) => {
-        console.log(d);
             res.send(d)
         })
         .catch((err) => {
             res.send(err)
-            console.log(err);
         })
 }
-deleteCategory = (req, res) => {
+let deleteCategory = (req, res) => {
     let id = req.params.id
     knex('Category').select("*").delete().where('Task.id', id)
         .then(() => {
